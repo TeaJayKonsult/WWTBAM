@@ -702,10 +702,28 @@ function shareResult(platform){
 
 // ==================== INSTALL BUTTON LOGIC ====================
 let deferredPrompt = null;
+const installBtn = document.getElementById('installBtn');
+
+// If app is already installed (standalone mode), hide the install button permanently
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  if (installBtn) installBtn.style.display = 'none';
+}
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   console.log('beforeinstallprompt fired');
+  // Show the button only if not already installed
+  if (installBtn && !window.matchMedia('(display-mode: standalone)').matches) {
+    installBtn.style.display = 'flex';
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('App installed successfully');
+  deferredPrompt = null;
+  // Hide the install button after installation
+  if (installBtn) installBtn.style.display = 'none';
 });
 
 async function installApp() {
@@ -714,9 +732,12 @@ async function installApp() {
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
       console.log('User accepted install');
+      // Hide button immediately upon acceptance
+      if (installBtn) installBtn.style.display = 'none';
     }
     deferredPrompt = null;
   } else {
+    // Fallback manual instructions (only shown if prompt not ready)
     let instructions = '';
     if (/android/i.test(navigator.userAgent)) {
       instructions = 'Tap the browser menu (⋮) and select "Install app" or "Add to Home Screen".';
@@ -728,6 +749,8 @@ async function installApp() {
     alert(`📲 Install Who Wants to Be a Millionaire:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
   }
 }
+if (installBtn) installBtn.addEventListener('click', installApp);
+// =============================================================
 document.getElementById('installBtn').addEventListener('click', installApp);
 // =============================================================
 
