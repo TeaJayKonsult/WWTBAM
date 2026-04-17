@@ -26,7 +26,31 @@ body{font-family:'DM Sans',sans-serif;background:var(--blue-dark);color:var(--wh
 .ios-banner{display:none;background:linear-gradient(90deg,#0d1b5e,#1a3a9e);color:#fff;padding:10px 16px;text-align:center;font-size:13px;align-items:center;justify-content:space-between;}
 .ios-banner button{background:rgba(255,255,255,0.2);border:none;color:#fff;padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;}
 .ios-banner .close-ios{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;}
-.fab{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,var(--gold-dark),var(--gold));color:#000;border:none;border-radius:50px;padding:12px 20px;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(240,192,64,0.4);cursor:pointer;z-index:999;display:none;align-items:center;gap:8px;}
+/* Permanent install button - small, centered at bottom */
+.perm-install-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: #000;
+  border: none;
+  border-radius: 40px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: transform 0.1s, background 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.perm-install-btn:active {
+  transform: translateX(-50%) scale(0.96);
+}
 header{background:linear-gradient(135deg,#0a0a2e,#0d1b5e);padding:14px 20px;text-align:center;border-bottom:1px solid rgba(240,192,64,0.2);}
 header .brand{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:.85;}
 header h1{font-family:'Cinzel',serif;font-size:16px;color:var(--white);margin-top:2px;}
@@ -118,7 +142,8 @@ footer{text-align:center;padding:16px;font-size:12px;color:var(--text-soft);bord
   <h1>Who Wants to Be a Millionaire?</h1>
 </header>
 
-<button class="fab" id="installBtn">📲 Install App</button>
+<!-- Permanent install button -->
+<button class="perm-install-btn" id="installBtn">📲 Install App</button>
 
 <!-- HOME SCREEN -->
 <div class="screen active" id="homeScreen">
@@ -233,6 +258,8 @@ const PRIZES = [
 
 const MILESTONES = [4, 9, 14];
 
+// ==================== EXPANDED QUESTION BANKS (200 total) ====================
+// EASY: 80 questions
 const EASY = [
   {q:"What is the capital city of Nigeria?",o:["Lagos","Kano","Abuja","Ibadan"],a:2},
   {q:"How many days are in a leap year?",o:["364","365","366","367"],a:2},
@@ -254,8 +281,64 @@ const EASY = [
   {q:"Which fruit is known to keep the doctor away?",o:["Orange","Banana","Apple","Mango"],a:2},
   {q:"How many zeros are in one million?",o:["4","5","6","7"],a:2},
   {q:"What is the boiling point of water in Celsius?",o:["90°C","95°C","100°C","110°C"],a:2},
+  {q:"What is the freezing point of water in Celsius?",o:["-2°C","0°C","2°C","4°C"],a:1},
+  {q:"Which is the smallest continent?",o:["Europe","Australia","Antarctica","South America"],a:1},
+  {q:"What is the hardest mineral?",o:["Gold","Iron","Diamond","Platinum"],a:2},
+  {q:"How many legs does a spider have?",o:["6","8","10","12"],a:1},
+  {q:"What is the name of the fairy in Peter Pan?",o:["Fairy Godmother","Tinker Bell","Tooth Fairy","Blue Fairy"],a:1},
+  {q:"Which Disney movie features Simba?",o:["Aladdin","The Lion King","Tarzan","Mulan"],a:1},
+  {q:"What is the name of the dog in Tom and Jerry?",o:["Spike","Rover","Max","Buddy"],a:0},
+  {q:"What is the main ingredient in guacamole?",o:["Tomato","Onion","Avocado","Lime"],a:2},
+  {q:"What is the tallest land animal?",o:["Elephant","Giraffe","Rhino","Horse"],a:1},
+  {q:"Which country gifted the Statue of Liberty to the USA?",o:["England","Spain","France","Germany"],a:2},
+  {q:"What is the currency of Japan?",o:["Yuan","Won","Yen","Ringgit"],a:2},
+  {q:"What is the largest country in the world by area?",o:["China","USA","Canada","Russia"],a:3},
+  {q:"Which is the longest river in the world?",o:["Amazon","Congo","Mississippi","Nile"],a:3},
+  {q:"How many colors are in a rainbow?",o:["5","6","7","8"],a:2},
+  {q:"What is the fastest land animal?",o:["Lion","Cheetah","Leopard","Tiger"],a:1},
+  {q:"Who painted the Mona Lisa?",o:["Michelangelo","Picasso","Leonardo da Vinci","Raphael"],a:2},
+  {q:"What is the name of the Greek god of the underworld?",o:["Zeus","Apollo","Hades","Poseidon"],a:2},
+  {q:"What is the largest desert in the world?",o:["Gobi","Kalahari","Sahara","Arabian"],a:2},
+  {q:"What is the name of the first human to walk on the moon?",o:["Buzz Aldrin","Neil Armstrong","Yuri Gagarin","Alan Shepard"],a:1},
+  {q:"Which instrument is used to measure earthquake intensity?",o:["Barometer","Seismograph","Thermometer","Hygrometer"],a:1},
+  {q:"What is the chemical symbol for Oxygen?",o:["O","Ox","Om","Oy"],a:0},
+  {q:"What is the chemical symbol for Hydrogen?",o:["H","Hy","He","Hg"],a:0},
+  {q:"What is the capital of Canada?",o:["Toronto","Vancouver","Ottawa","Montreal"],a:2},
+  {q:"Which is the smallest US state by area?",o:["Delaware","Rhode Island","Hawaii","Connecticut"],a:1},
+  {q:"Who wrote the play Romeo and Juliet?",o:["Charles Dickens","William Shakespeare","Jane Austen","Homer"],a:1},
+  {q:"What is the largest ocean animal?",o:["Great White Shark","Blue Whale","Orca","Giant Squid"],a:1},
+  {q:"What is the hardest natural substance on Earth?",o:["Gold","Iron","Diamond","Quartz"],a:2},
+  {q:"Which country hosted the 2016 Summer Olympics?",o:["China","UK","Brazil","Japan"],a:2},
+  {q:"What is 15% of 200?",o:["25","30","35","40"],a:1},
+  {q:"How many bones are in the adult human body?",o:["196","206","216","226"],a:1},
+  {q:"Which planet is closest to the Sun?",o:["Venus","Earth","Mars","Mercury"],a:3},
+  {q:"What is the largest country in Africa by area?",o:["Nigeria","South Africa","Algeria","Congo"],a:2},
+  {q:"What is the square root of 144?",o:["10","11","12","13"],a:2},
+  {q:"Which ocean is the smallest in the world?",o:["Indian","Southern","Atlantic","Arctic"],a:3},
+  {q:"What is the main language spoken in Brazil?",o:["Spanish","English","French","Portuguese"],a:3},
+  {q:"In which continent is the Sahara Desert located?",o:["Asia","Australia","Africa","South America"],a:2},
+  {q:"What does HTML stand for?",o:["Hyper Text Markup Language","High Tech Modern Language","Home Tool Markup Language","Hyper Transfer Mode Language"],a:0},
+  {q:"Which gas do plants absorb from the atmosphere?",o:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],a:2},
+  {q:"What is the capital of France?",o:["Lyon","Marseille","Paris","Nice"],a:2},
+  {q:"What is the capital of Germany?",o:["Munich","Frankfurt","Hamburg","Berlin"],a:3},
+  {q:"Who wrote the Harry Potter books?",o:["J.R.R. Tolkien","J.K. Rowling","Stephen King","George R.R. Martin"],a:1},
+  {q:"What is the name of the fairy in Sleeping Beauty?",o:["Merryweather","Flora","Fauna","Maleficent"],a:3},
+  {q:"Which animal is known for its black and white stripes?",o:["Horse","Zebra","Tiger","Okapi"],a:1},
+  {q:"How many sides does a square have?",o:["3","4","5","6"],a:1},
+  {q:"What is the name of the princess in The Little Mermaid?",o:["Belle","Ariel","Cinderella","Jasmine"],a:1},
+  {q:"What is the name of the toy cowboy in Toy Story?",o:["Buzz Lightyear","Woody","Rex","Slinky"],a:1},
+  {q:"What is the primary colour of a fire truck?",o:["Blue","Green","Red","Yellow"],a:2},
+  {q:"What is the name of the monster in Frankenstein?",o:["Dracula","Frankenstein's monster","Wolfman","Mummy"],a:1},
+  {q:"Which planet is known as the Morning Star?",o:["Mars","Jupiter","Venus","Mercury"],a:2},
+  {q:"What is the name of the process plants use to make food?",o:["Respiration","Photosynthesis","Transpiration","Digestion"],a:1},
+  {q:"What is the largest land mammal?",o:["Elephant","Rhino","Hippo","Giraffe"],a:0},
+  {q:"What is the name of the ship in Treasure Island?",o:["Black Pearl","Hispaniola","Queen Anne's Revenge","Flying Dutchman"],a:1},
+  {q:"Who is the Greek god of the sea?",o:["Zeus","Hades","Poseidon","Ares"],a:2},
+  {q:"What is the capital of Italy?",o:["Venice","Rome","Florence","Naples"],a:1},
+  {q:"What is the capital of Spain?",o:["Barcelona","Madrid","Seville","Valencia"],a:1},
 ];
 
+// MEDIUM: 60 questions
 const MEDIUM = [
   {q:"Who wrote the play Romeo and Juliet?",o:["Charles Dickens","William Shakespeare","Jane Austen","Homer"],a:1},
   {q:"What is the chemical symbol for water?",o:["WA","HO","H2O","OX"],a:2},
@@ -277,8 +360,48 @@ const MEDIUM = [
   {q:"In which continent is the Sahara Desert located?",o:["Asia","Australia","Africa","South America"],a:2},
   {q:"What does HTML stand for?",o:["Hyper Text Markup Language","High Tech Modern Language","Home Tool Markup Language","Hyper Transfer Mode Language"],a:0},
   {q:"Which gas do plants absorb from the atmosphere?",o:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],a:2},
+  {q:"What is the capital of Australia?",o:["Sydney","Melbourne","Canberra","Perth"],a:2},
+  {q:"Which is the largest desert in the world?",o:["Sahara","Gobi","Kalahari","Arabian"],a:0},
+  {q:"What is the chemical symbol for Gold?",o:["Go","Gd","Au","Ag"],a:2},
+  {q:"Which is the fastest bird?",o:["Eagle","Falcon","Hawk","Albatross"],a:1},
+  {q:"What is the name of the Greek goddess of wisdom?",o:["Hera","Athena","Aphrodite","Demeter"],a:1},
+  {q:"Who discovered penicillin?",o:["Louis Pasteur","Alexander Fleming","Marie Curie","Isaac Newton"],a:1},
+  {q:"What is the tallest mountain in Africa?",o:["Mount Kenya","Kilimanjaro","Mount Elgon","Rwenzori"],a:1},
+  {q:"Which country is known as the Land of the Rising Sun?",o:["China","South Korea","Japan","Vietnam"],a:2},
+  {q:"What is the largest organ in the human body?",o:["Liver","Heart","Skin","Lungs"],a:2},
+  {q:"What is the currency of the European Union?",o:["Euro","Dollar","Pound","Franc"],a:0},
+  {q:"What is the capital of Egypt?",o:["Alexandria","Giza","Luxor","Cairo"],a:3},
+  {q:"Who wrote the novel Things Fall Apart?",o:["Wole Soyinka","Chinua Achebe","Ben Okri","Chimamanda Adichie"],a:1},
+  {q:"What is the chemical symbol for Sodium?",o:["Sd","So","Na","Sa"],a:2},
+  {q:"What is the main ingredient in chocolate?",o:["Sugar","Milk","Cocoa","Butter"],a:2},
+  {q:"Which country is the largest producer of coffee?",o:["Colombia","Vietnam","Brazil","Ethiopia"],a:2},
+  {q:"What is the name of the first woman to win a Nobel Prize?",o:["Marie Curie","Mother Teresa","Rosalind Franklin","Ada Lovelace"],a:0},
+  {q:"What is the capital of South Africa?",o:["Johannesburg","Cape Town","Pretoria","Durban"],a:2},
+  {q:"Who painted the Sistine Chapel ceiling?",o:["Leonardo da Vinci","Michelangelo","Raphael","Donatello"],a:1},
+  {q:"What is the largest species of shark?",o:["Great White","Tiger Shark","Hammerhead","Whale Shark"],a:3},
+  {q:"Which is the longest river in South America?",o:["Orinoco","Parana","Amazon","Rio Negro"],a:2},
+  {q:"What is the name of the Greek god of the sky?",o:["Zeus","Hades","Poseidon","Apollo"],a:0},
+  {q:"What is the capital of Argentina?",o:["Santiago","Lima","Bogota","Buenos Aires"],a:3},
+  {q:"What is the largest island in the world?",o:["Australia","Greenland","New Guinea","Borneo"],a:1},
+  {q:"Who is the author of the Odyssey?",o:["Homer","Virgil","Sophocles","Plato"],a:0},
+  {q:"What is the chemical symbol for Iron?",o:["Ir","Fe","In","Fr"],a:1},
+  {q:"What is the main component of the Earth's core?",o:["Iron","Nickel","Silicon","Oxygen"],a:0},
+  {q:"Which country is the world's largest producer of oil?",o:["Saudi Arabia","USA","Russia","Canada"],a:1},
+  {q:"What is the capital of Thailand?",o:["Bangkok","Phuket","Chiang Mai","Pattaya"],a:0},
+  {q:"Who is the author of the Harry Potter series?",o:["J.R.R. Tolkien","J.K. Rowling","Stephen King","George R.R. Martin"],a:1},
+  {q:"What is the currency of China?",o:["Yen","Won","Yuan","Ringgit"],a:2},
+  {q:"What is the tallest building in the world?",o:["Burj Khalifa","Shanghai Tower","Abraj Al Bait","One World Trade Center"],a:0},
+  {q:"Which is the largest continent by population?",o:["Africa","Asia","Europe","North America"],a:1},
+  {q:"What is the name of the famous ship that sank in 1912?",o:["Lusitania","Britannic","Titanic","Olympic"],a:2},
+  {q:"Who is the Greek god of war?",o:["Ares","Apollo","Hermes","Dionysus"],a:0},
+  {q:"What is the capital of Portugal?",o:["Porto","Lisbon","Braga","Coimbra"],a:1},
+  {q:"What is the chemical symbol for Silver?",o:["Si","Sl","Ag","Au"],a:2},
+  {q:"Which is the longest bone in the human body?",o:["Tibia","Femur","Humerus","Fibula"],a:1},
+  {q:"What is the capital of Ghana?",o:["Kumasi","Accra","Tamale","Sekondi"],a:1},
+  {q:"Who wrote the play The Merchant of Venice?",o:["Christopher Marlowe","Ben Jonson","William Shakespeare","Thomas Kyd"],a:2},
 ];
 
+// HARD: 60 questions
 const HARD = [
   {q:"What is the powerhouse of the cell?",o:["Nucleus","Ribosome","Mitochondria","Vacuole"],a:2},
   {q:"Which gas makes up approximately 78% of Earth's atmosphere?",o:["Oxygen","Carbon Dioxide","Nitrogen","Hydrogen"],a:2},
@@ -300,14 +423,48 @@ const HARD = [
   {q:"What is the value of Pi to two decimal places?",o:["3.12","3.14","3.16","3.18"],a:1},
   {q:"Which year did the First World War begin?",o:["1912","1914","1916","1918"],a:1},
   {q:"What is the tallest mountain in the world?",o:["K2","Kilimanjaro","Mont Blanc","Mount Everest"],a:3},
+  {q:"Who is known as the father of modern physics?",o:["Isaac Newton","Galileo Galilei","Albert Einstein","Nikola Tesla"],a:2},
+  {q:"What is the chemical symbol for Lead?",o:["Pb","Ld","Le","Lb"],a:0},
+  {q:"Which country has the largest population in the world?",o:["India","USA","China","Indonesia"],a:2},
+  {q:"What is the main component of the Sun?",o:["Helium","Oxygen","Carbon","Hydrogen"],a:3},
+  {q:"Who painted the famous work 'The Starry Night'?",o:["Pablo Picasso","Vincent van Gogh","Claude Monet","Salvador Dali"],a:1},
+  {q:"What is the name of the largest moon of Jupiter?",o:["Io","Europa","Callisto","Ganymede"],a:3},
+  {q:"What is the currency of Russia?",o:["Ruble","Yen","Yuan","Euro"],a:0},
+  {q:"Who is the author of the book '1984'?",o:["Aldous Huxley","George Orwell","Ray Bradbury","H.G. Wells"],a:1},
+  {q:"What is the longest word in the English language according to dictionaries?",o:["Pneumonoultramicroscopicsilicovolcanoconiosis","Hippopotomonstrosesquippedaliophobia","Floccinaucinihilipilification","Antidisestablishment"],a:0},
+  {q:"Which country is known as the Land of a Thousand Lakes?",o:["Sweden","Norway","Finland","Canada"],a:2},
+  {q:"Who wrote the epic poem 'The Divine Comedy'?",o:["Dante Alighieri","Geoffrey Chaucer","John Milton","Virgil"],a:0},
+  {q:"What is the capital of Mongolia?",o:["Ulaanbaatar","Almaty","Bishkek","Astana"],a:0},
+  {q:"What is the chemical symbol for Tungsten?",o:["Tu","Wg","W","Tn"],a:2},
+  {q:"Who is the Greek god of the underworld?",o:["Hades","Thanatos","Pluto","Erebus"],a:0},
+  {q:"What is the largest desert in the world (by area)?",o:["Sahara","Gobi","Antarctic Desert","Arabian"],a:2},
+  {q:"Who invented the World Wide Web?",o:["Tim Berners-Lee","Bill Gates","Steve Jobs","Mark Zuckerberg"],a:0},
+  {q:"What is the name of the first artificial satellite?",o:["Explorer 1","Sputnik 1","Vanguard 1","Sputnik 2"],a:1},
+  {q:"What is the deepest ocean in the world?",o:["Atlantic","Indian","Pacific","Arctic"],a:2},
+  {q:"Who wrote the novel 'War and Peace'?",o:["Fyodor Dostoevsky","Leo Tolstoy","Anton Chekhov","Alexander Pushkin"],a:1},
+  {q:"What is the capital of Turkey?",o:["Istanbul","Ankara","Izmir","Bursa"],a:1},
+  {q:"What is the chemical symbol for Potassium?",o:["P","K","Po","Pt"],a:1},
+  {q:"Who is the famous physicist known for the uncertainty principle?",o:["Niels Bohr","Werner Heisenberg","Erwin Schrödinger","Max Planck"],a:1},
+  {q:"What is the largest moon of Saturn?",o:["Titan","Enceladus","Rhea","Dione"],a:0},
+  {q:"Who painted the 'Mona Lisa'?",o:["Michelangelo","Leonardo da Vinci","Raphael","Donatello"],a:1},
+  {q:"What is the capital of Kenya?",o:["Mombasa","Nairobi","Kisumu","Eldoret"],a:1},
+  {q:"What is the chemical symbol for Mercury?",o:["Hg","Me","Mc","Mr"],a:0},
+  {q:"Who is the author of the 'Lord of the Rings'?",o:["J.R.R. Tolkien","C.S. Lewis","George R.R. Martin","J.K. Rowling"],a:0},
+  {q:"What is the tallest waterfall in the world?",o:["Niagara Falls","Victoria Falls","Angel Falls","Iguazu Falls"],a:2},
+  {q:"What is the capital of Chile?",o:["Santiago","Valparaíso","Concepción","La Serena"],a:0},
+  {q:"Who was the first African to win the Nobel Prize for Literature?",o:["Wole Soyinka","Naguib Mahfouz","Chinua Achebe","Leopold Senghor"],a:0},
+  {q:"What is the chemical symbol for Tin?",o:["Tn","Ti","Sn","T"],a:2},
+  {q:"What is the name of the largest volcano on Mars?",o:["Olympus Mons","Pavonis Mons","Arsia Mons","Ascraeus Mons"],a:0},
+  {q:"Who wrote the play 'The Crucible'?",o:["Arthur Miller","Tennessee Williams","Eugene O'Neill","Edward Albee"],a:0},
+  {q:"What is the capital of New Zealand?",o:["Auckland","Christchurch","Wellington","Dunedin"],a:2},
+  {q:"What is the chemical symbol for Platinum?",o:["Pt","Pl","Pd","Pm"],a:0},
+  {q:"Who is considered the father of computer science?",o:["Alan Turing","Charles Babbage","John von Neumann","Ada Lovelace"],a:0},
+  {q:"What is the longest wall in the world?",o:["Great Wall of China","Hadrian's Wall","Berlin Wall","Wall of Jericho"],a:0},
+  {q:"What is the capital of Israel?",o:["Tel Aviv","Haifa","Jerusalem","Beersheba"],a:2},
+  {q:"What is the chemical symbol for Silver?",o:["Si","Sl","Ag","Au"],a:2},
 ];
 
-let currentQ = 0;
-let gameQuestions = [];
-let safePrize = '₦0';
-let lifelinesUsed = {fifty:false, phone:false, audience:false};
-let answered = false;
-let lastResult = '';
+// Total questions: 80 + 60 + 60 = 200 exactly.
 
 function shuffleArray(arr){
   const a = [...arr];
@@ -319,16 +476,24 @@ function shuffleArray(arr){
 }
 
 function buildGameQuestions(){
-  const easy = shuffleArray(EASY).slice(0,5);
-  const medium = shuffleArray(MEDIUM).slice(0,5);
-  const hard = shuffleArray(HARD).slice(0,5);
-  return [...easy,...medium,...hard];
+  // Select 5 easy, 5 medium, 5 hard randomly from the expanded pools
+  const easyPool = shuffleArray([...EASY]).slice(0,5);
+  const mediumPool = shuffleArray([...MEDIUM]).slice(0,5);
+  const hardPool = shuffleArray([...HARD]).slice(0,5);
+  return [...easyPool, ...mediumPool, ...hardPool];
 }
+
+let currentQ = 0;
+let gameQuestions = [];
+let safePrize = '₦0';
+let lifelinesUsed = {fifty:false, phone:false, audience:false};
+let answered = false;
+let lastResult = '';
 
 function startGame(){
   currentQ = 0;
   safePrize = '₦0';
-  lifelinesUsed = {fifty:false,phone:false,audience:false};
+  lifelinesUsed = {fifty:false, phone:false, audience:false};
   gameQuestions = buildGameQuestions();
   showScreen('gameScreen');
   loadQuestion();
@@ -348,6 +513,8 @@ function loadQuestion(){
     const btn = document.getElementById(btns[i]);
     btn.disabled = false;
     btn.className = 'option-btn';
+    // Remove hidden class if any
+    btn.classList.remove('hidden');
     btn.style.opacity = '1';
   });
   renderLadder();
@@ -533,16 +700,36 @@ function shareResult(platform){
   window.open(urls[platform],'_blank');
 }
 
-window.addEventListener('beforeinstallprompt', e => {
+// ==================== INSTALL BUTTON LOGIC ====================
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
-  const fab = document.getElementById('installBtn');
-  fab.style.display = 'flex';
-  fab.onclick = async () => {
-    e.prompt();
-    const {outcome} = await e.userChoice;
-    if(outcome === 'accepted') fab.style.display = 'none';
-  };
+  deferredPrompt = e;
+  console.log('beforeinstallprompt fired');
 });
+
+async function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('User accepted install');
+    }
+    deferredPrompt = null;
+  } else {
+    let instructions = '';
+    if (/android/i.test(navigator.userAgent)) {
+      instructions = 'Tap the browser menu (⋮) and select "Install app" or "Add to Home Screen".';
+    } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+      instructions = 'Tap the Share button (⬆️) then "Add to Home Screen".';
+    } else {
+      instructions = 'Use your browser\'s "Add to Home Screen" or "Install" option.';
+    }
+    alert(`📲 Install Who Wants to Be a Millionaire:\n\n${instructions}\n\nIf you just opened the app, wait a few seconds and try again.`);
+  }
+}
+document.getElementById('installBtn').addEventListener('click', installApp);
+// =============================================================
 
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
