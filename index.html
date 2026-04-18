@@ -142,7 +142,7 @@ footer{text-align:center;padding:16px;font-size:12px;color:var(--text-soft);bord
   <h1>Who Wants to Be a Millionaire?</h1>
 </header>
 
-<!-- Permanent install button -->
+<!-- Permanent install button (initially visible, hidden after installation) -->
 <button class="perm-install-btn" id="installBtn">📲 Install App</button>
 
 <!-- HOME SCREEN -->
@@ -700,7 +700,7 @@ function shareResult(platform){
   window.open(urls[platform],'_blank');
 }
 
-// ==================== INSTALL BUTTON LOGIC ====================
+// ==================== INSTALL BUTTON LOGIC (FIXED) ====================
 let deferredPrompt = null;
 const installBtn = document.getElementById('installBtn');
 
@@ -750,8 +750,6 @@ async function installApp() {
   }
 }
 if (installBtn) installBtn.addEventListener('click', installApp);
-// =============================================================
-document.getElementById('installBtn').addEventListener('click', installApp);
 // =============================================================
 
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
